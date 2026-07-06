@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="description" content="Daily Catholic Bible verses and Saint quotes for men. Lock screen widget PWA.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Catholic Daily Virtue">
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a1a2e' width='192' height='192'/><text x='50%' y='50%' font-size='120' fill='%23d4af37' text-anchor='middle' dominant-baseline='middle' font-family='serif'>✝</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a1a2e' width='192' height='192'/><text x='50%' y='50%' font-size='120' fill='%23d4af37' text-anchor='middle' dominant-baseline='middle' font-family='serif'>✝</text></svg>">
+    
+    <title>Catholic Daily Virtue - Daily Bible Verses for Men</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #16213e 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 16px;
+            background-attachment: fixed;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Lock Screen Phone Frame */
+        .phone-frame {
+            background: #000;
+            border-radius: 48px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            aspect-ratio: 9 / 19.5;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .notch {
+            background: #000;
+            height: 28px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            padding: 0 24px 8px;
+        }
+
+        .notch-inner {
+            width: 130px;
+            height: 20px;
+            background: #000;
+            border-radius: 0 0 24px 24px;
+        }
+
+        .screen {
+            flex: 1;
+            background: linear-gradient(180deg, #0a0a15 0%, #1a1a2e 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .decorative-cross {
+            position: absolute;
+            font-size: 200px;
+            opacity: 0.05;
+            z-index: 0;
+        }
+
+        .cross-top {
+            top: -50px;
+            right: -50px;
+        }
+
+        .cross-bottom {
+            bottom: -50px;
+            left: -50px;
+        }
+
+        .screen > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .time-section {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .time-display {
+            font-size: 56px;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            font-variant-numeric: tabular-nums;
+            margin-bottom: 8px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace;
+        }
+
+        .date-display {
+            font-size: 13px;
+            color: #999;
+            letter-spacing: 0.02em;
+        }
+
+        .quote-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .quote-card {
+            background: linear-gradient(135deg, rgba(139, 90, 43, 0.3) 0%, rgba(59, 90, 150, 0.3) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(184, 134, 11, 0.3);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .cross-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .quote-text {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 16px;
+            color: #fef3c7;
+            letter-spacing: 0.3px;
+        }
+
+        .quote-source {
+            font-size: 12px;
+            color: #a0a0a0;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .quote-type {
+            font-size: 11px;
+            color: #60a5fa;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .next-quote-preview {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(111, 111, 111, 0.5);
+            font-size: 12px;
+            color: #a0a0a0;
+        }
+
+        .next-quote-preview-label {
+            color: #888;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .next-quote-preview-text {
+            color: #b0b0b0;
+            font-style: italic;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .actions-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 16px 20px;
+            border: none;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b5bdb 0%, #1e3a8a 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2d4a9d 0%, #152a6a 100%);
+            box-shadow: 0 10px 25px rgba(59, 91, 219, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .update-notice {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            margin-top: 8px;
+        }
+
+        .install-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .install-section.hidden {
+            display: none;
+        }
+
+        .install-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            margin-top: 12px;
+            width: 100%;
+        }
+
+        .install-btn:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 480px) {
+            .phone-frame {
+                border-radius: 36px;
+            }
+
+            .time-display {
+                font-size: 48px;
+            }
+
+            .quote-text {
+                font-size: 16px;
+            }
+
+            .screen {
+                padding: 20px;
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            body {
+                background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 50%, #d1d5db 100%);
+            }
+
+            .screen {
+                background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+                color: #1f2937;
+            }
+
+            .time-display,
+            .quote-text {
+                color: #111827;
+            }
+
+            .quote-card {
+                background: linear-gradient(135deg, rgba(210, 180, 140, 0.2) 0%, rgba(173, 216, 230, 0.2) 100%);
+                border-color: rgba(184, 134, 11, 0.4);
+            }
+
+            .date-display,
+            .quote-source,
+            .next-quote-preview-label {
+                color: #6b7280;
+            }
+
+            .next-quote-preview-text {
+                color: #4b5563;
+            }
+
+            .btn-secondary {
+                background: rgba(0, 0, 0, 0.05);
+                border-color: rgba(0, 0, 0, 0.1);
+                color: #1f2937;
+            }
+        }
+
+        /* Landscape orientation */
+        @media (orientation: landscape) and (max-height: 600px) {
+            .phone-frame {
+                max-height: 80vh;
+            }
+
+            .screen {
+                padding: 16px;
+            }
+
+            .time-display {
+                font-size: 36px;
+                margin-bottom: 4px;
+            }
+
+            .quote-text {
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+
+            .quote-card {
+                padding: 16px;
+            }
+
+            .actions-section {
+                gap: 8px;
+            }
+
+            .btn {
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loading-skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 8px;
+            height: 100%;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Lock Screen Phone Frame -->
+        <div class="phone-frame">
+            <div class="notch">
+                <div class="notch-inner"></div>
+            </div>
+
+            <div class="screen">
+                <div class="decorative-cross cross-top">✝</div>
+                <div class="decorative-cross cross-bottom">✝</div>
+
+                <!-- Time & Date -->
+                <div class="time-section">
+                    <div class="time-display" id="timeDisplay">12:34</div>
+                    <div class="date-display" id="dateDisplay">Monday, January 1</div>
+                </div>
+
+                <!-- Quote Section -->
+                <div class="quote-section">
+                    <div class="quote-card">
+                        <span class="cross-icon">✝</span>
+                        <p class="quote-text" id="quoteText">Loading today's verse...</p>
+                        <p class="quote-source" id="quoteSource">— Initializing...</p>
+                        <p class="quote-type" id="quoteType"></p>
+
+                        <!-- Next Quote Preview -->
+                        <div class="next-quote-preview">
+                            <label class="next-quote-preview-label">Tomorrow's Verse:</label>
+                            <p class="next-quote-preview-text" id="nextQuoteText">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="actions-section">
+                    <button class="btn btn-primary" id="generateBtn" onclick="generateNewQuote()">
+                        <span id="generateBtnIcon">✨</span>
+                        <span id="generateBtnText">Generate AI Quote</span>
+                    </button>
+
+                    <button class="btn btn-secondary" id="shareBtn" onclick="shareQuote()">
+                        <span>📤</span>
+                        Share Today's Quote
+                    </button>
+
+                    <div class="install-section hidden" id="installPrompt">
+                        <p>Add to your home screen for quick access</p>
+                        <button class="btn install-btn" id="installBtn" onclick="installApp()">
+                            📱 Add to Home Screen
+                        </button>
+                    </div>
+
+                    <div class="update-notice">Updates automatically at midnight</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // Quote Database
+        // ============================================
+        const QUOTE_DATABASE = [
+            { text: "Be a man. A real man fears God and nothing else.", source: "Saint John Paul II", type: "saint" },
+            { text: "I can do all things through Christ who strengthens me.", source: "Philippians 4:13", type: "verse" },
+            { text: "Man up. Take responsibility for your sins, your family, and your faith.", source: "Catholic Teaching", type: "teaching" },
+            { text: "As iron sharpens iron, so one man sharpens another.", source: "Proverbs 27:17", type: "verse" },
+            { text: "For God has not given us a spirit of fear, but of power and of love and of a sound mind.", source: "2 Timothy 1:7", type: "verse" },
+            { text: "Put on the full armor of God, so that you can take your stand against the devil's schemes.", source: "Ephesians 6:11", type: "verse" },
+            { text: "Faithfulness in small things is a big thing.", source: "Saint John of the Cross", type: "saint" },
+            { text: "Do not be conformed to this world, but be transformed by the renewal of your mind.", source: "Romans 12:2", type: "verse" },
+            { text: "The measure of a man is not how hard he hits, but how he stands back up.", source: "Catholic Reflection", type: "teaching" },
+            { text: "Courage is not the absence of fear, but action despite fear in service of what's right.", source: "Catholic Moral Teaching", type: "teaching" },
+            { text: "Let the peace of Christ rule in your hearts, since as members of one body you were called to peace.", source: "Colossians 3:15", type: "verse" },
+            { text: "Whatever you do, work at it with all your heart, as working for the Lord, not for human masters.", source: "Colossians 3:23", type: "verse" },
+            { text: "Be strong and courageous. Do not be afraid or discouraged, for the Lord your God is with you.", source: "Joshua 1:9", type: "verse" },
+            { text: "The strongest man is the one who falls to his knees and admits he cannot do it alone.", source: "Catholic Wisdom", type: "teaching" },
+            { text: "Live as free men, but do not use your freedom as a cover-up for evil; live as servants of God.", source: "1 Peter 2:16", type: "verse" },
+            { text: "My grace is sufficient for you, for my power is made perfect in weakness.", source: "2 Corinthians 12:9", type: "verse" },
+            { text: "A man who loves his wife loves Christ's Church, and that is his greatest earthly vocation.", source: "Ephesians 5:25", type: "teaching" },
+            { text: "Lead like Christ. Serve like a soldier. Love like a father.", source: "Catholic Reflection", type: "teaching" },
+            { text: "Blessed is the man whose delight is in the law of the Lord, and who meditates on his law day and night.", source: "Psalm 1:2", type: "verse" },
+            { text: "A real man provides. A real man protects. A real man prays.", source: "Catholic Teaching", type: "teaching" },
+            { text: "Therefore put on the full armor of God, so that when the day of evil comes, you may be able to stand your ground.", source: "Ephesians 6:13", type: "verse" },
+            { text: "No temptation has overtaken you except what is common to mankind. And God is faithful; he will not let you be tempted beyond what you can bear.", source: "1 Corinthians 10:13", type: "verse" },
+            { text: "You are not just called to believe in Christ—you are called to live like Him.", source: "Saint John Paul II", type: "saint" },
+            { text: "Every man has the capacity for greatness, not because he is destined to achieve high office, but because every man has the capacity to serve.", source: "Catholic Reflection", type: "teaching" },
+            { text: "I press on toward the goal to win the prize for which God has called me heavenward in Christ Jesus.", source: "Philippians 3:14", type: "verse" },
+            { text: "The greatest love is to lay down your life for your friends.", source: "John 15:13", type: "verse" },
+            { text: "Guard your heart above all else, for it determines the course of your life.", source: "Proverbs 4:23", type: "verse" },
+            { text: "A fool despises his father's instruction, but whoever heeds correction shows prudence.", source: "Proverbs 15:5", type: "verse" },
+            { text: "Hear, my son, your father's instruction, and do not forsake your mother's teaching.", source: "Proverbs 1:8", type: "verse" },
+            { text: "He who finds a wife finds a good thing and obtains favor from the Lord.", source: "Proverbs 18:22", type: "verse" },
+        ];
+
+        let deferredPrompt = null;
+
+        // ============================================
+        // Initialize
+        // ============================================
+        function init() {
+            updateTime();
+            loadTodayQuote();
+            setupInstallPrompt();
+            registerServiceWorker();
+            
+            // Update time every second
+            setInterval(updateTime, 1000);
+            
+            // Check for quote update at midnight
+            checkMidnightUpdate();
+        }
+
+        // ============================================
+        // Time Management
+        // ============================================
+        function updateTime() {
+            const now = new Date();
+            
+            // Format time
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('timeDisplay').textContent = `${hours}:${minutes}`;
+            
+            // Format date
+            const dateOptions = { weekday: 'long', month: 'long', day: 'numeric' };
+            const dateStr = now.toLocaleDateString('en-US', dateOptions);
+            document.getElementById('dateDisplay').textContent = dateStr;
+        }
+
+        // ============================================
+        // Quote Management
+        // ============================================
+        function getQuoteForDate(date) {
+            // Deterministic quote selection based on date
+            const dateStr = date.toDateString();
+            const hash = dateStr.split('').reduce((acc, char) => {
+                return acc * 31 + char.charCodeAt(0);
+            }, 0);
+            const index = Math.abs(hash) % QUOTE_DATABASE.length;
+            return QUOTE_DATABASE[index];
+        }
+
+        function loadTodayQuote() {
+            const today = new Date();
+            const quote = getQuoteForDate(today);
+            displayQuote(quote);
+            
+            // Get next day's quote
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const nextQuote = getQuoteForDate(tomorrow);
+            
+            document.getElementById('nextQuoteText').textContent = `"${nextQuote.text}"`;
+        }
+
+        function displayQuote(quote) {
+            const quoteText = document.getElementById('quoteText');
+            const quoteSource = document.getElementById('quoteSource');
+            const quoteType = document.getElementById('quoteType');
+            
+            quoteText.classList.remove('fade-in');
+            
+            // Trigger reflow to restart animation
+            void quoteText.offsetWidth;
+            
+            quoteText.textContent = `"${quote.text}"`;
+            quoteSource.textContent = `— ${quote.source}`;
+            
+            const typeMap = {
+                'verse': '📖 Bible Verse',
+                'saint': '⛪ Saint Quote',
+                'teaching': '✝ Catholic Teaching'
+            };
+            quoteType.textContent = typeMap[quote.type] || '';
+            
+            quoteText.classList.add('fade-in');
+            
+            // Save to localStorage
+            localStorage.setItem('todayQuote', JSON.stringify({
+                ...quote,
+                date: new Date().toDateString()
+            }));
+        }
+
+        // ============================================
+        // AI Quote Generation
+        // ============================================
+        async function generateNewQuote() {
+            const btn = document.getElementById('generateBtn');
+            const btnIcon = document.getElementById('generateBtnIcon');
+            const btnText = document.getElementById('generateBtnText');
+            
+            btn.disabled = true;
+            btnIcon.innerHTML = '<span class="spinner"></span>';
+            btnText.textContent = 'Generating...';
+            
+            try {
+                const response = await fetch("https://api.anthropic.com/v1/messages", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        model: "claude-sonnet-4-6",
+                        max_tokens: 200,
+                        messages: [
+                            {
+                                role: "user",
+                                content: "Generate ONE powerful, manly Catholic Bible verse or Saint quote for men. Format: Quote text on first line, then on next line: Source (Bible reference or Saint name). Make it bold, action-oriented, and emphasize courage, faith, virtue, or strength. No commentary, just the quote and source."
+                            }
+                        ],
+                    })
+                });
+
+                const data = await response.json();
+                const generatedText = data.content[0]?.text || '';
+                const lines = generatedText.split('\n').map(s => s.trim()).filter(s => s);
+                
+                if (lines.length >= 2) {
+                    const quote = {
+                        text: lines[0].replace(/^[""]|[""]$/g, ''),
+                        source: lines[1],
+                        type: 'generated'
+                    };
+                    displayQuote(quote);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error generating quote. Please try again.');
+            } finally {
+                btn.disabled = false;
+                btnIcon.innerHTML = '✨';
+                btnText.textContent = 'Generate AI Quote';
+            }
+        }
+
+        // ============================================
+        // Share Functionality
+        // ============================================
+        function shareQuote() {
+            const quoteText = document.getElementById('quoteText').textContent;
+            const quoteSource = document.getElementById('quoteSource').textContent;
+            const shareText = `${quoteText}\n\n${quoteSource}\n\n📱 From Catholic Daily Virtue\nhttps://your-github.github.io/catholic-daily-virtue`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Catholic Daily Virtue',
+                    text: shareText,
+                });
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('Quote copied to clipboard!');
+                }).catch(() => {
+                    alert(shareText);
+                });
+            }
+        }
+
+        // ============================================
+        // PWA Installation
+        // ============================================
+        function setupInstallPrompt() {
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                document.getElementById('installPrompt').classList.remove('hidden');
+            });
+
+            window.addEventListener('appinstalled', () => {
+                deferredPrompt = null;
+                document.getElementById('installPrompt').classList.add('hidden');
+            });
+        }
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        deferredPrompt = null;
+                        document.getElementById('installPrompt').classList.add('hidden');
+                    }
+                });
+            }
+        }
+
+        // ============================================
+        // Service Worker
+        // ============================================
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').catch(err => {
+                    console.log('Service Worker registration failed:', err);
+                });
+            }
+        }
+
+        // ============================================
+        // Midnight Update Check
+        // ============================================
+        function checkMidnightUpdate() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+            
+            const timeUntilMidnight = tomorrow - now;
+            
+            setTimeout(() => {
+                loadTodayQuote();
+                checkMidnightUpdate(); // Reschedule for next midnight
+            }, timeUntilMidnight);
+        }
+
+        // Start the app
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
