@@ -15,8 +15,17 @@
   "categories": ["lifestyle", "productivity"],
   "prefer_related_applications": false,
   "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
-  "related_applications": [],
-  "scope_extensions": [],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.catholicdailyvirtue.app",
+      "id": "com.catholicdailyvirtue.app"
+    }
+  ],
+  "scope_extensions": [
+    { "origin": "https://25sayasd.github.io" }
+  ],
+  "file_handlers": [],
   "icons": [
     {
       "src": "icons/icon-96.png",
