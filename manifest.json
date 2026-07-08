@@ -45,15 +45,15 @@
   ],
   "screenshots": [
     {
-      "src": "icons/screenshot-narrow.png",
-      "sizes": "390x844",
+      "src": "icons/ss-narrow.png",
+      "sizes": "1080x1920",
       "type": "image/png",
       "form_factor": "narrow",
       "label": "Catholic Daily Virtue daily quote on mobile"
     },
     {
-      "src": "icons/screenshot-wide.png",
-      "sizes": "1024x768",
+      "src": "icons/ss-wide.png",
+      "sizes": "1920x1080",
       "type": "image/png",
       "form_factor": "wide",
       "label": "Catholic Daily Virtue on desktop"
