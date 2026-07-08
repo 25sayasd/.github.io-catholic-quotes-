@@ -2,67 +2,60 @@
   "name": "Catholic Daily Virtue - Daily Bible Verses for Men",
   "short_name": "Catholic Virtue",
   "description": "A new manly Catholic Bible verse or Saint quote appears every day on your lock screen. Inspiring, Catholic, always.",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
   "theme_color": "#1a1a2e",
-  "background_color": "#000000",
-  "screenshots": [
-    {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'><rect fill='%231a1a2e' width='540' height='720'/><circle cx='270' cy='100' r='60' fill='%23d4af37' opacity='0.2'/><rect x='40' y='200' width='460' height='200' rx='20' fill='%234a5a8a' opacity='0.3'/><text x='270' y='320' text-anchor='middle' font-size='24' fill='%23fef3c7' font-family='serif'>Catholic Daily Virtue</text><text x='270' y='550' text-anchor='middle' font-size='16' fill='%23d4af37'>A new verse every day</text></svg>",
-      "sizes": "540x720",
-      "type": "image/svg+xml",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 1920'><rect fill='%231a1a2e' width='1080' height='1920'/><circle cx='540' cy='200' r='120' fill='%23d4af37' opacity='0.2'/><rect x='80' y='400' width='920' height='400' rx='40' fill='%234a5a8a' opacity='0.3'/><text x='540' y='640' text-anchor='middle' font-size='48' fill='%23fef3c7' font-family='serif'>Catholic Daily Virtue</text><text x='540' y='1400' text-anchor='middle' font-size='32' fill='%23d4af37'>A new verse every day</text></svg>",
-      "sizes": "1080x1920",
-      "type": "image/svg+xml",
-      "form_factor": "narrow"
-    }
-  ],
+  "background_color": "#1a1a2e",
+  "categories": ["lifestyle", "productivity"],
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a1a2e' width='192' height='192'/><text x='50%' y='50%' font-size='120' fill='%23d4af37' text-anchor='middle' dominant-baseline='middle' font-family='serif'>✝</text></svg>",
-      "sizes": "192x192",
-      "type": "image/svg+xml",
+      "src": "icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a1a2e' width='192' height='192'/><text x='50%' y='50%' font-size='120' fill='%23d4af37' text-anchor='middle' dominant-baseline='middle' font-family='serif'>✝</text></svg>",
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "maskable"
     }
   ],
-  "categories": [
-    "lifestyle",
-    "productivity"
+  "screenshots": [
+    {
+      "src": "icons/screenshot-narrow.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
   ],
   "shortcuts": [
     {
       "name": "Today's Quote",
       "short_name": "Quote",
       "description": "See today's Catholic verse",
-      "url": "/?action=quote",
+      "url": "./?action=quote",
       "icons": [
         {
-          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%231a1a2e' width='96' height='96'/><text x='50%' y='50%' font-size='60' fill='%23d4af37' text-anchor='middle' dominant-baseline='middle' font-family='serif'>✝</text></svg>",
+          "src": "icons/icon-96.png",
           "sizes": "96x96",
-          "type": "image/svg+xml"
+          "type": "image/png"
         }
       ]
     }
-  ],
-  "share_target": {
-    "action": "/share",
-    "method": "POST",
-    "enctype": "application/x-www-form-urlencoded",
-    "params": {
-      "title": "title",
-      "text": "text",
-      "url": "url"
-    }
-  }
+  ]
 }
