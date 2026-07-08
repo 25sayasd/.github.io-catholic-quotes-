@@ -1,5 +1,7 @@
 {
   "id": "com.catholicdailyvirtue.app",
+  "lang": "en",
+  "dir": "ltr",
   "name": "Catholic Daily Virtue - Daily Bible Verses for Men",
   "short_name": "Catholic Virtue",
   "description": "A new manly Catholic Bible verse or Saint quote appears every day on your lock screen. Inspiring, Catholic, always.",
@@ -12,6 +14,9 @@
   "background_color": "#1a1a2e",
   "categories": ["lifestyle", "productivity"],
   "prefer_related_applications": false,
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+  "related_applications": [],
+  "scope_extensions": [],
   "icons": [
     {
       "src": "icons/icon-96.png",
@@ -41,14 +46,14 @@
   "screenshots": [
     {
       "src": "icons/screenshot-narrow.png",
-      "sizes": "540x720",
+      "sizes": "390x844",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Catholic Daily Virtue lock screen quote"
+      "label": "Catholic Daily Virtue daily quote on mobile"
     },
     {
       "src": "icons/screenshot-wide.png",
-      "sizes": "1280x720",
+      "sizes": "1024x768",
       "type": "image/png",
       "form_factor": "wide",
       "label": "Catholic Daily Virtue on desktop"
